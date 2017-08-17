@@ -66,155 +66,9 @@
     });
   } );
   
-  $("#tags2").bind("keypress", {}, keypressInBox);
 
-function keypressInBox(e) {
-    var code = (e.keyCode ? e.keyCode : e.which);
-    if (code == 13) { //Enter keycode                        
-        e.preventDefault();
-		
-        console.log($("#tags2"));
-    }
-};
 
-  </script>
-  <script>
-  $( function() {
-    $.widget( "custom.combobox", {
-      _create: function() {
-        this.wrapper = $( "<span>" )
-          .addClass( "custom-combobox" )
-          .insertAfter( this.element );
- 
-        this.element.hide();
-        this._createAutocomplete();
-        this._createShowAllButton();
-      },
- 
-      _createAutocomplete: function() {
-        var selected = this.element.children( ":selected" ),
-          value = selected.val() ? selected.text() : "";
- 
-        this.input = $( "<input>" )
-          .appendTo( this.wrapper )
-          .val( value )
-          .attr( "title", "" )
-          .addClass( "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left" )
-          .autocomplete({
-            delay: 0,
-            minLength: 0,
-            source: $.proxy( this, "_source" )
-          })
-          .tooltip({
-            classes: {
-              "ui-tooltip": "ui-state-highlight"
-            }
-          });
- 
-        this._on( this.input, {
-          autocompleteselect: function( event, ui ) {
-            ui.item.option.selected = true;
-            this._trigger( "select", event, {
-              item: ui.item.option
-            });
-          },
- 
-          autocompletechange: "_removeIfInvalid"
-        });
-      },
- 
-      _createShowAllButton: function() {
-        var input = this.input,
-          wasOpen = false;
- 
-        $( "<a>" )
-          .attr( "tabIndex", -1 )
-          .attr( "title", "Show All Items" )
-          .tooltip()
-          .appendTo( this.wrapper )
-          .button({
-            icons: {
-              primary: "ui-icon-triangle-1-s"
-            },
-            text: false
-          })
-          .removeClass( "ui-corner-all" )
-          .addClass( "custom-combobox-toggle ui-corner-right" )
-          .on( "mousedown", function() {
-            wasOpen = input.autocomplete( "widget" ).is( ":visible" );
-          })
-          .on( "click", function() {
-            input.trigger( "focus" );
- 
-            // Close if already visible
-            if ( wasOpen ) {
-              return;
-            }
- 
-            // Pass empty string as value to search for, displaying all results
-            input.autocomplete( "search", "" );
-          });
-      },
- 
-      _source: function( request, response ) {
-        var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
-        response( this.element.children( "option" ).map(function() {
-          var text = $( this ).text();
-          if ( this.value && ( !request.term || matcher.test(text) ) )
-            return {
-              label: text,
-              value: text,
-              option: this
-            };
-        }) );
-      },
- 
-      _removeIfInvalid: function( event, ui ) {
- 
-        // Selected an item, nothing to do
-        if ( ui.item ) {
-          return;
-        }
- 
-        // Search for a match (case-insensitive)
-        var value = this.input.val(),
-          valueLowerCase = value.toLowerCase(),
-          valid = false;
-        this.element.children( "option" ).each(function() {
-          if ( $( this ).text().toLowerCase() === valueLowerCase ) {
-            this.selected = valid = true;
-            return false;
-          }
-        });
- 
-        // Found a match, nothing to do
-        if ( valid ) {
-          return;
-        }
- 
-        // Remove invalid value
-        this.input
-          .val( "" )
-          .attr( "title", value + " didn't match any item" )
-          .tooltip( "open" );
-        this.element.val( "" );
-        this._delay(function() {
-          this.input.tooltip( "close" ).attr( "title", "" );
-        }, 2500 );
-        this.input.autocomplete( "instance" ).term = "";
-      },
- 
-      _destroy: function() {
-        this.wrapper.remove();
-        this.element.show();
-      }
-    });
- 
-    $( "#combobox" ).combobox();
-    $( "#toggle" ).on( "click", function() {
-      $( "#combobox" ).toggle();
-    });
-  } );
+
   </script>
   
 	<style type="text/css">
@@ -230,6 +84,46 @@ function keypressInBox(e) {
 
   <body class="index" id="page-top">
 	<script>
+	let counter=60;
+	let loginCounter=0;
+	var names= [
+	"Guy Yom Tov",	
+      "Micahel Bargury",
+      "Or Golan",
+      "Ori Bar-El"
+      ];
+	  var ids= [
+		"10155120752592261",	
+      "100000028873993",
+      "720388990",
+      "1279179649"
+      ];
+	  var availableTags = [
+      "Micahel Bargury",
+      "Or Golan",
+      "Ori Bar-El",
+      "Guy Yom Tov",
+      "Raylene Antonio",  
+		"Regena Gile", 
+		"Nga Mcguckin",  
+		"Emerita Kingery",
+		"Robert Bettcher",
+		"Adelle Kulpa",
+		"Zetta Vitiello",  
+		"Pearlie Lauer",  
+		"Cathy Jaffee ", 
+		"Cherish Farnes",  
+		"Patti Costilla",  
+		"Arthur Lamborn ", 
+		"Florentina Ho  ",
+		"Corie Seldon  ",
+		"Shalonda Cotta",  
+		"Asa Capoccia  ",
+		"Larissa Ricks  ",
+		"Imogene Cubbage ", 
+		"Alesia Godin  ",
+		"Sallie Bomgardner"
+    ];
   // This is called with the results from from FB.getLoginStatus().
   function statusChangeCallback(response) {
     console.log('statusChangeCallback');
@@ -262,7 +156,7 @@ function keypressInBox(e) {
   };
     function addUserImage(item) {
 	var toadd= '<div class="col-sm-4 portfolio-item style="float:left;"> \
-            <div class="portfolio-link" href="#portfolioModal'+item.id+'" data-toggle="modal" onclick="startTimer()"> \
+            <div class="portfolio-link" href="#portfolioModal'+"2"+'" data-toggle="modal" onclick="startTimer('+item.id+')"> \
               <div class="caption"> \
                 <div class="caption-content"> \
                   <i class="fa fa-search-plus fa-3x"></i> \
@@ -309,7 +203,24 @@ function keypressInBox(e) {
 	testAPI();
 };
   
-  
+  function onKeyPressInSelect(ele,id) {
+	
+    if(event.keyCode == 13) {
+		if(ele.value==names[id%4]){
+			document.getElementById('success').innerHTML = "Nice ! You got "+counter+" Points";
+			clearInterval(myInterval);
+			document.getElementById('hour-glass').style.display = 'none';           // Hide
+			document.getElementById('timeOut').style.display = 'none';           // Hide
+			document.getElementById('share').style.display = 'block'; 
+			//alert("Nice ! Its "+ele.value);
+		}
+		else{
+			document.getElementById('timeOut').innerHTML = "Opss ! Its not "+ele.value;
+			
+		}
+                
+    }
+}
   function checkLoginState() {
     FB.getLoginStatus(function(response) {
 	console.log(response);
@@ -355,15 +266,39 @@ function keypressInBox(e) {
 	console.log("testAPI");
     FB.api('/me', function(response) {
 	console.log(response);
-      document.getElementById('greeting').innerHTML = "Hello "+response.name;
+	if(loginCounter==0){
+		document.getElementById('greeting').innerHTML = "Hello "+response.name;
 	  getUser(response.id);
 	  getUserFriends(response.id);
+	  loginCounter++;
+	}
+      
     });
   }
-  let counter=60;
+  
   var myInterval;
-  function startTimer() {
-  autoActivate();
+  function startTimer(id) {
+  //autoActivate();
+  
+  	document.getElementById('gameHeader').innerHTML = '<h3>Can You Be Faster Then '+names[id-1]+' ? </h3>';
+	document.getElementById('share').innerHTML = 'Dare '+names[id-1]+'. Can He Do It Faster?\
+	<a href="https://www.facebook.com/dialog/feed?  \
+	  app_id=145634995501895  \
+	  &display=popup&amp;caption=Join%20Me%20On%20Face-it!   \
+	  &link=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2F  \
+	  &redirect_uri=https://developers.facebook.com/tools/explorer \
+	  &to='+ids[id-1]+'" target="blank"> \
+	<img src="../static/img/facebook-share-button.png" alt="Share" style="width:60px;height:60x;border:0;">\
+	</a>';
+	document.getElementById('inputDiv').innerHTML = '<input id="tags2" onkeydown="onKeyPressInSelect(this,'+id+')">';
+	$( "#tags2" ).autocomplete({
+      source: availableTags
+    });
+	document.getElementById('success').innerHTML = "";
+	document.getElementById('hour-glass').style.display = 'block';           // Hide
+	document.getElementById('timeOut').style.display = 'block';           // Hide
+	document.getElementById('timeOut').innerHTML = "";
+			
 	 counter = 60;
      myInterval = setInterval(function () {
 	  counter--;
@@ -428,6 +363,7 @@ function keypressInBox(e) {
           <span class="skills">Challenge your friends!</span></br>
 		  <span class="skills">See who recognize your mutual friends faster</span>
         </div>
+
       </div>
     </header>
 
@@ -631,53 +567,33 @@ function keypressInBox(e) {
 			<div id="counter" style="position: absolute;font-size: 20px;margin-left:5px"></div>	
 
                 <div class="modal-body">
-				<div id="gameHeader"><h3>Challenge Michael </h3></div>
+				<div id="gameHeader"><h3>Can You Be Faster Then Michael ? </h3></div>
                   
                   <hr class="star-primary">
 				  
 		<div class="ui-widget" style="z-index: 10000;">
   <label for="tags">Who Is It ?</label>
-  <input id="tags2">
+  <div id="inputDiv"></div>
+  
 </div>
-				  <div class="ui-widget">
-  <label>Your preferred programming language: </label>
-  <select id="combobox">
-    <option value="">Select one...</option>
-    <option value="ActionScript">ActionScript</option>
-    <option value="AppleScript">AppleScript</option>
-    <option value="Asp">Asp</option>
-    <option value="BASIC">BASIC</option>
-    <option value="C">C</option>
-    <option value="C++">C++</option>
-    <option value="Clojure">Clojure</option>
-    <option value="COBOL">COBOL</option>
-    <option value="ColdFusion">ColdFusion</option>
-    <option value="Erlang">Erlang</option>
-    <option value="Fortran">Fortran</option>
-    <option value="Groovy">Groovy</option>
-    <option value="Haskell">Haskell</option>
-    <option value="Java">Java</option>
-    <option value="JavaScript">JavaScript</option>
-    <option value="Lisp">Lisp</option>
-    <option value="Perl">Perl</option>
-    <option value="PHP">PHP</option>
-    <option value="Python">Python</option>
-    <option value="Ruby">Ruby</option>
-    <option value="Scala">Scala</option>
-    <option value="Scheme">Scheme</option>
-  </select>
-</div>
-<button id="toggle">Show underlying select</button>
- 
- 
 				  
-					<form style="margin: 30px;">
-					  <input type="text" id="fooInput" />
-					</form>
 					<div id="result">
 					</div>
 					<div id="timeOut" style="font-size: 40px;color: red;font-style: italic;">
 					</div>
+					<div id="success" style="font-size: 40px;color: green;font-style: italic;">
+					</div>
+					<div id="share" style="font-size: 25px;color: blue;font-style: italic;display:none;">
+						Dare Michael. Can He Do It Faster?
+					<a href='https://www.facebook.com/dialog/feed?
+  app_id=145634995501895
+  &display=popup&amp;caption=Join%20Me%20On%20Face-it! 
+  &link=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2F
+  &redirect_uri=https://developers.facebook.com/tools/explorer
+  &to=100000028873993' target="blank">
+				  <img src="../static/img/facebook-share-button.png" alt="Share" style="width:60px;height:60x;border:0;">
+				</a>
+				</div>
 					
                   <button class="btn btn-success" type="button" data-dismiss="modal" onclick="stopCounter()">
                     <i class="fa fa-times"></i>
@@ -689,6 +605,7 @@ function keypressInBox(e) {
         </div>
       </div>
     </div>
+	<!--
 	<div class="portfolio-modal modal fade" id="portfolioModal3" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -700,12 +617,45 @@ function keypressInBox(e) {
           <div class="container">
             <div class="row">
               <div class="col-lg-8 mx-auto">
+			  <div style="float:left">
+					<div id='hour-glass'>
+					  <div id='glass'></div>
+					  <div id='sand-stream'></div>
+					  <div id='top-sand'></div>
+					  <div id='bottom-sand'></div>
+						</div>
+				</div>
+			<div id="counter" style="position: absolute;font-size: 20px;margin-left:5px"></div>	
+
                 <div class="modal-body">
-				<div id="gameHeader"><h3>Challenge Or </h3></div>
+				<div id="gameHeader"><h3>Can You Be Faster Then Or ? </h3></div>
                   
                   <hr class="star-primary">
+				  
+		<div class="ui-widget" style="z-index: 10000;">
+  <label for="tags">Who Is It ?</label>
+  <input id="tags2" onkeydown="onKeyPressInSelect(this,1)">
+</div>
+				  
+					<div id="result">
+					</div>
+					<div id="timeOut" style="font-size: 40px;color: red;font-style: italic;">
+					</div>
+					<div id="success" style="font-size: 40px;color: green;font-style: italic;">
+					</div>
+					<div id="share" style="font-size: 25px;color: blue;font-style: italic;display:none;">
+						Dare Or. Can He Do It Faster?
+					<a href='https://www.facebook.com/dialog/feed?
+  app_id=145634995501895
+  &display=popup&amp;caption=Join%20Me%20On%20Face-it! 
+  &link=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2F
+  &redirect_uri=https://developers.facebook.com/tools/explorer
+  &to=720388990' target="blank">
+				  <img src="../static/img/facebook-share-button.png" alt="Share" style="width:60px;height:60x;border:0;">
+				</a>
+				</div>
 					
-                  <button class="btn btn-success" type="button" data-dismiss="modal">
+                  <button class="btn btn-success" type="button" data-dismiss="modal" onclick="stopCounter()">
                     <i class="fa fa-times"></i>
                     Close</button>
                 </div>
@@ -715,6 +665,7 @@ function keypressInBox(e) {
         </div>
       </div>
     </div>
+	
 	<div class="portfolio-modal modal fade" id="portfolioModal4" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -726,12 +677,45 @@ function keypressInBox(e) {
           <div class="container">
             <div class="row">
               <div class="col-lg-8 mx-auto">
+			  <div style="float:left">
+					<div id='hour-glass'>
+					  <div id='glass'></div>
+					  <div id='sand-stream'></div>
+					  <div id='top-sand'></div>
+					  <div id='bottom-sand'></div>
+						</div>
+				</div>
+			<div id="counter" style="position: absolute;font-size: 20px;margin-left:5px"></div>	
+
                 <div class="modal-body">
-				<div id="gameHeader"><h3>Challenge Ori </h3></div>
+				<div id="gameHeader"><h3>Can You Be Faster Then Ori ? </h3></div>
                   
                   <hr class="star-primary">
+				  
+		<div class="ui-widget" style="z-index: 10000;">
+  <label for="tags">Who Is It ?</label>
+  <input id="tags2" onkeydown="onKeyPressInSelect(this,1)">
+</div>
+				  
+					<div id="result">
+					</div>
+					<div id="timeOut" style="font-size: 40px;color: red;font-style: italic;">
+					</div>
+					<div id="success" style="font-size: 40px;color: green;font-style: italic;">
+					</div>
+					<div id="share" style="font-size: 25px;color: blue;font-style: italic;display:none;">
+						Dare Ori. Can He Do It Faster?
+					<a href='https://www.facebook.com/dialog/feed?
+  app_id=145634995501895
+  &display=popup&amp;caption=Join%20Me%20On%20Face-it! 
+  &link=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2F
+  &redirect_uri=https://developers.facebook.com/tools/explorer
+  &to=1279179649' target="blank">
+				  <img src="../static/img/facebook-share-button.png" alt="Share" style="width:60px;height:60x;border:0;">
+				</a>
+				</div>
 					
-                  <button class="btn btn-success" type="button" data-dismiss="modal">
+                  <button class="btn btn-success" type="button" data-dismiss="modal" onclick="stopCounter()">
                     <i class="fa fa-times"></i>
                     Close</button>
                 </div>
@@ -740,72 +724,9 @@ function keypressInBox(e) {
           </div>
         </div>
       </div>
-    </div>
-	<div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="close-modal" data-dismiss="modal">
-            <div class="lr">
-              <div class="rl"></div>
-            </div>
-          </div>
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-8 mx-auto">
-                <div class="modal-body">
-				<div id="gameHeader"><h3>Challenge Guy </h3></div>
-                  
-                  <hr class="star-primary">
-                  <img class="img-fluid img-centered" src="img/portfolio/submarine.png" alt="">
-                  <!--<p>Use this area of the page to describe your project. The icon above is part of a free icon set by
-                    <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
-                  <ul class="list-inline item-details">
-                    <li>Client:
-                      <strong>
-                        <a href="http://startbootstrap.com">Start Bootstrap</a>
-                      </strong>
-                    </li>
-                    <li>Date:
-                      <strong>
-                        <a href="http://startbootstrap.com">April 2014</a>
-                      </strong>
-                    </li>
-                    <li>Service:
-                      <strong>
-                        <a href="http://startbootstrap.com">Web Development</a>
-                      </strong>
-                    </li>
-                  </ul>-->
-                  <button class="btn btn-success" type="button" data-dismiss="modal">
-                    <i class="fa fa-times"></i>
-                    Close</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-		
-		<script type="text/javascript">
-		  var yourSource = [
-		  {
-			label: "A",
-			id: "id1"
-		  }, 
-		  {
-			label: "B",
-			id: "id2"
-		  }];
-		  $("#fooInput").autocomplete({
-			source: yourSource,
-			select: function(event, ui) {
-			  var e = ui.item;
-			  var result = "<p>label : " + e.label + " - id : " + e.id + "</p>";
-			  $("#result").append(result);
-			}
-		  });
-		</script>
+    </div>-->
+	
+	
     <!-- Bootstrap core JavaScript
     <script src="../static/vendor/jquery/jquery.min.js"></script> -->
     <script src="../static/vendor/popper/popper.min.js"></script>
