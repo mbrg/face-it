@@ -86,17 +86,28 @@
 		}
 		);
 	 };
+	 function getPerms() {
+    FB.login(function(response) {
+        if (response.authResponse) {
+		console.log(response.authResponse);
+            testAPI();
+        }
+    }, {scope:"user_friends"});
+	testAPI();
+};
   
   
   function checkLoginState() {
     FB.getLoginStatus(function(response) {
 	console.log(response);
+	console.log("active get perms");
+		getPerms();
       statusChangeCallback(response);
     });
   }
   window.fbAsyncInit = function() {
   FB.init({
-    appId      : '142309669698596',
+    appId      : '112092699492326',
     cookie     : true,  // enable cookies to allow the server to access 
                         // the session
     xfbml      : true,  // parse social plugins on this page
@@ -149,9 +160,11 @@
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
 			
-			<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-			</fb:login-button>
+		<!--	<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+			</fb:login-button>-->
 		  <button onclick="logout()">logout</button>
+		  		  <button onclick="getPerms()">login</button>
+
             <!--<a class="nav-link" href="#portfolio">Portfolio</a>-->
           </li>
 		  <li class="nav-item">
