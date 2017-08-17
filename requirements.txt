@@ -1,0 +1,7 @@
+requirements for the code:
+
+image preprocessor:
+python 3.6
+OpenCV 3.2
+Matplotlib 2
+Numpy 1.6+
