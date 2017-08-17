@@ -2,8 +2,8 @@ import cv2
 
 
 class ImagePreprocessor:
-    def __init__(self, image, scale_factor=1.1):
-        self.haar_face_cascade = cv2.CascadeClassifier('data/haarcascade_frontalface_alt.xml')
+    def __init__(self, image, xml='data/haarcascade_frontalface_alt.xml', scale_factor=1.1):
+        self.haar_face_cascade = cv2.CascadeClassifier(xml)
         self.scale_factor = scale_factor
         self.image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         self.faces = self.haar_face_cascade.detectMultiScale(self.image,
