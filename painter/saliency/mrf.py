@@ -9,7 +9,6 @@ from functools import reduce
 import logging
 
 import numpy as np
-from scipy import misc
 import math
 from sklearn.metrics.pairwise import pairwise_distances
 from sklearn.preprocessing import normalize
