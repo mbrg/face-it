@@ -8,10 +8,11 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Freelancer - Start Bootstrap Theme</title>
+    <title>Face It !</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
     <!-- Custom fonts for this template -->
     <link href="../static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -24,10 +25,118 @@
   </head>
 
   <body class="index" id="page-top">
+	<script>
+  // This is called with the results from from FB.getLoginStatus().
+  function statusChangeCallback(response) {
+    console.log('statusChangeCallback');
+    console.log(response);
+    // The response object is returned with a status field that lets the
+    // app know the current login status of the person.
+    // Full docs on the response object can be found in the documentation
+    // for FB.getLoginStatus().
+    if (response.status === 'connected') {
+      // Logged into your app and Facebook.
+      testAPI();
+    } else {
+      // The person is not logged into your app or we are unable to tell.
+      document.getElementById('status').innerHTML = 'Please log ' +
+        'into this app.';
+    }
+  }
+  // This function is called when someone finishes with the Login
+  // Button.  See the onlogin handler attached to it in the sample
+  // code below.
+  function getUser(userId) {
+    FB.api(
+	"/"+userId+"/picture?width=150",
+	function(response) {
+		if(response && !response.error){
+			console.log(response);
+			document.getElementById('myphoto').innerHTML = "<img src="+response.data.url+">";
+		}		
+    });
+  };
+    function addUserImage(item, index) {
+	var toadd= '<div class="col-sm-4 portfolio-item"> \
+            <div class="portfolio-link" href="#portfolioModal6" data-toggle="modal"> \
+              <div class="caption"> \
+                <div class="caption-content"> \
+                  <i class="fa fa-search-plus fa-3x"></i> \
+                </div> \
+              </div> \
+              <img class="img-fluid" src="'+item.picture+'" alt=""> \
+            </div> \
+          </div> ' ;
+    document.getElementById('myFriends').innerHTML = document.getElementById('myFriends').innerHTML+ toadd;
+};
+
+  
+  function getUserFriends(userId){
+	FB.api(
+    "/me/friends",
+    function (response) {
+      if (response && !response.error) {
+		console.log(response.data);
+			response.data.forEach(addUserImage);
+			}
+		}
+		);
+	 };
+  
+  
+  function checkLoginState() {
+    FB.getLoginStatus(function(response) {
+	console.log(response);
+      statusChangeCallback(response);
+    });
+  }
+  window.fbAsyncInit = function() {
+  FB.init({
+    appId      : '142309669698596',
+    cookie     : true,  // enable cookies to allow the server to access 
+                        // the session
+    xfbml      : true,  // parse social plugins on this page
+    version    : 'v2.8' // use graph api version 2.8
+  });
+  // Now that we've initialized the JavaScript SDK, we call 
+  // FB.getLoginStatus().  This function gets the state of the
+  // person visiting this page and can return one of three states to
+  // the callback you provide.  They can be:
+  //
+  // 1. Logged into your app ('connected')
+  // 2. Logged into Facebook, but not your app ('not_authorized')
+  // 3. Not logged into Facebook and can't tell if they are logged into
+  //    your app or not.
+  //
+  // These three cases are handled in the callback function.
+  FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+  });
+  };
+  // Load the SDK asynchronously
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+  // Here we run a very simple test of the Graph API after login is
+  // successful.  See statusChangeCallback() for when this call is made.
+  function testAPI() {
+	console.log("testAPI");
+    FB.api('/me', function(response) {
+	console.log(response);
+      document.getElementById('greeting').innerHTML = "Hello "+response.name;
+	  getUser(response.id);
+	  getUserFriends(response.id);
+    });
+  }
+</script>
 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
-      <a class="navbar-brand" href="#page-top">Start Bootstrap</a>
+      <a class="navbar-brand" href="#page-top">Face It !</a>
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         Menu
         <i class="fa fa-bars"></i>
@@ -35,14 +144,24 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" href="#portfolio">Portfolio</a>
+			
+			<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+			</fb:login-button>
+		  
+            <!--<a class="nav-link" href="#portfolio">Portfolio</a>-->
+          </li>
+		  <li class="nav-item">
+			
+           <a class="nav-link" href="#portfolio">Play !</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#about">About</a>
           </li>
+		  <!--
           <li class="nav-item">
             <a class="nav-link" href="#contact">Contact</a>
           </li>
+		  -->
         </ul>
       </div>
     </nav>
@@ -62,7 +181,8 @@
     <!-- Portfolio Grid Section -->
     <section id="portfolio">
       <div class="container">
-        <h2 class="text-center">Portfolio</h2>
+        <h2 class="text-center" id="greeting">Welcome</h2>
+		<div id="myphoto">My Photo</div>
         <hr class="star-primary">
         <div class="row">
           <div class="col-sm-4 portfolio-item">
@@ -72,49 +192,13 @@
                   <i class="fa fa-search-plus fa-3x"></i>
                 </div>
               </div>
-              <img class="img-fluid" src="img/portfolio/cabin.png" alt="">
+			  	
+
             </div>
           </div>
-          <div class="col-sm-4 portfolio-item">
-            <div class="portfolio-link" href="#portfolioModal2" data-toggle="modal">
-              <div class="caption">
-                <div class="caption-content">
-                  <i class="fa fa-search-plus fa-3x"></i>
-                </div>
-              </div>
-              <img class="img-fluid" src="img/portfolio/cake.png" alt="">
-            </div>
-          </div>
-          <div class="col-sm-4 portfolio-item">
-            <div class="portfolio-link" href="#portfolioModal3" data-toggle="modal">
-              <div class="caption">
-                <div class="caption-content">
-                  <i class="fa fa-search-plus fa-3x"></i>
-                </div>
-              </div>
-              <img class="img-fluid" src="img/portfolio/circus.png" alt="">
-            </div>
-          </div>
-          <div class="col-sm-4 portfolio-item">
-            <div class="portfolio-link" href="#portfolioModal4" data-toggle="modal">
-              <div class="caption">
-                <div class="caption-content">
-                  <i class="fa fa-search-plus fa-3x"></i>
-                </div>
-              </div>
-              <img class="img-fluid" src="img/portfolio/game.png" alt="">
-            </div>
-          </div>
-          <div class="col-sm-4 portfolio-item">
-            <div class="portfolio-link" href="#portfolioModal5" data-toggle="modal">
-              <div class="caption">
-                <div class="caption-content">
-                  <i class="fa fa-search-plus fa-3x"></i>
-                </div>
-              </div>
-              <img class="img-fluid" src="img/portfolio/safe.png" alt="">
-            </div>
-          </div>
+
+		<div id="myFriends"></div>
+	<!--
           <div class="col-sm-4 portfolio-item">
             <div class="portfolio-link" href="#portfolioModal6" data-toggle="modal">
               <div class="caption">
@@ -122,9 +206,10 @@
                   <i class="fa fa-search-plus fa-3x"></i>
                 </div>
               </div>
-              <img class="img-fluid" src="img/portfolio/submarine.png" alt="">
+              <img class="img-fluid" src="../static/img/portfolio/submarine.png" alt="">
             </div>
-          </div>
+          </div
+		  -->
         </div>
       </div>
     </section>
