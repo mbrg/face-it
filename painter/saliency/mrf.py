@@ -211,6 +211,32 @@ class Graph(object):
             if not neigh.get_is_observed():
                 neigh.set_in_msg(vertex.get_coor(), vertex.snd_msg(neigh))
 
+    def move(self, vertex, v_max=30, exp_v_max=np.exp(-30)):
+        possible_neighs = []
+        possible_neighs_probs = []
+        cur_y = vertex._y
+
+        for neigh_coor in vertex.get_neighbors():
+            neigh = self.get_vertex_by_coor(neigh_coor)
+            if not neigh.get_is_observed():
+                possible_neighs.append(neigh)
+                dist = np.abs(cur_y - neigh._y)
+                if dist > v_max:
+                    possible_neighs_probs.append(exp_v_max)
+                else:
+                    possible_neighs_probs.append(np.exp(-dist))
+
+        if len(possible_neighs)==0:
+            return None
+        else:
+            # normalize
+            possible_neighs_probs = np.array(possible_neighs_probs) / sum(possible_neighs_probs)
+
+            # draw neigh from distribution
+            choosen_neigh = np.random.choice(possible_neighs, p=possible_neighs_probs)
+
+            return choosen_neigh
+
 
 def build_grid_graph(n, m, img_mat, obs_mat):
     """ Builds an nxm grid graph, with vertex values corresponding to pixel intensities.
@@ -241,18 +267,25 @@ def build_grid_graph(n, m, img_mat, obs_mat):
     return g
 
 
-def grid2mat(grid, n, m):
+def grid2mat(grid, n, m, unobserved_to_belief=True):
     """ convertes grid graph to a np.ndarray
     n: num of rows
     m: num of columns
     returns: np.ndarray of shape (n,m)
     """
     mat = np.zeros((n, m))
+    obs = np.zeros((n, m))
     l = grid.vertices()  # list of vertices
     for v in l:
         row, col = v.get_coor()
-        mat[row][col] = v.get_original_value() if v.get_is_observed() else v.get_max_belief()
-    return mat
+
+        if unobserved_to_belief:
+            mat[row][col] = v.get_original_value() if v.get_is_observed() else v.get_max_belief()
+        else:
+            mat[row][col] = v.get_original_value()
+        obs[row][col] = v.get_is_observed()
+
+    return mat, obs
 
 
 def phi(x1=None, x2=None, v_max=V_MAX):
@@ -370,6 +403,6 @@ def api(image, obs_mat, curve='line', iterations=1000, verbose=False, v_max=50, 
     LBP(g, n, curve, iterations)
 
     # convert grid to image:
-    inferred_img = grid2mat(g, n, m)
+    inferred_img, obs = grid2mat(g, n, m)
 
     return inferred_img
