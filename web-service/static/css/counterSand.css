@@ -1,0 +1,126 @@
+body {
+  margin: 50px;
+}
+
+#hour-glass {
+  position: relative;
+  width: 60px;
+  height: 120px;
+  overflow: visible;
+  display: table;
+}
+
+#glass {
+  position: absolute;
+  width: 0; height: 0;
+  border-top: solid #c0c0c0 120px;
+  border-left: solid transparent 60px;
+  border-right: solid transparent 60px;
+}
+
+#glass::after {
+  content: "";
+  position: absolute;
+  left: -60px; bottom: -120px;
+  border-bottom: solid #c0c0c0 120px;
+  border-left: solid transparent 60px;
+  border-right: solid transparent 60px;
+}
+
+#glass::before {
+  z-index: 1;
+  content: "";
+  position: absolute;
+  top: -10px; left: -6px;
+  width: 12px; height: 20px;
+  background-color: #303030;
+  border-radius: 3px;
+}
+
+#top-sand {
+  display: block;
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-top: solid #422608 3px;
+  border-left: solid transparent 2px;
+  border-right: solid transparent 2px;
+  right: -2px;
+  margin-left: auto; margin-right: auto;
+  position: absolute; bottom: 0;
+  animation: drain 60s ease-in;
+}  
+
+#bottom-sand {
+  position: absolute;
+  bottom: -120px;
+  border-bottom: solid #422608 100px;
+  border-left: solid transparent 48px;
+  border-right: solid transparent 48px;
+  right: -48px;
+  animation: fill 60s ease-out;
+}
+
+#sand-stream {
+  position: absolute;
+  width: 0px; height: 118px;
+  left: 59px; top: 120px;
+  border-left: dotted #422608 3px;
+  opacity: 0;
+  animation: shift 0.1s linear infinite, disappear 60s linear 1;
+}
+
+@keyframes disappear {
+  0% {
+    display: block;
+    opacity: 0.9;
+  }
+  99% {
+    display: block;
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+  }
+}
+
+@keyframes shift {
+  0% {
+    top: 120px;
+  }
+  100% {
+    top: 123px;
+    height: 116px;
+  }
+}
+
+@keyframes fill {
+  0% { 
+    border-bottom: solid #422608 2px;
+    border-left: solid transparent 2px;
+    border-right: solid transparent 2px;
+    right: -2px;
+  }
+  100% {
+    border-bottom: solid #422608 100px;
+    border-left: solid transparent 48px;
+    border-right: solid transparent 48px;
+    right: -48px;
+  }
+}
+
+@keyframes drain {
+  0% { 
+    border-top: solid #422608 100px;
+    border-left: solid transparent 48px;
+    border-right: solid transparent 48px;
+    right: -48px;
+  }
+  100% {
+    border-top: solid #422608 3px;
+    border-left: solid transparent 2px;
+    border-right: solid transparent 2px;
+    right: -2px;
+  }
+}

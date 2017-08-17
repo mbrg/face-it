@@ -12,7 +12,7 @@
 
     <!-- Bootstrap core CSS -->
     <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
 
     <!-- Custom fonts for this template -->
     <link href="../static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -21,6 +21,10 @@
 
     <!-- Custom styles for this template -->
     <link href="../static/css/freelancer.min.css" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+	<link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+	<link href="../static/css/counterSand.css" rel="stylesheet">
 
   </head>
 
@@ -52,19 +56,19 @@
 	function(response) {
 		if(response && !response.error){
 			console.log(response);
-			document.getElementById('myphoto').innerHTML = "<img src="+response.data.url+">";
+			document.getElementById('myphoto').innerHTML = '<img style="border-radius: 70px;"src='+response.data.url+'>';
 		}		
     });
   };
-    function addUserImage(item, index) {
-	var toadd= '<div class="col-sm-4 portfolio-item"> \
-            <div class="portfolio-link" href="#portfolioModal6" data-toggle="modal"> \
+    function addUserImage(item) {
+	var toadd= '<div class="col-sm-4 portfolio-item style="float:left;"> \
+            <div class="portfolio-link" href="#portfolioModal'+item.id+'" data-toggle="modal" onclick="startTimer()"> \
               <div class="caption"> \
                 <div class="caption-content"> \
                   <i class="fa fa-search-plus fa-3x"></i> \
                 </div> \
               </div> \
-              <img class="img-fluid" src="'+item.picture+'" alt=""> \
+              <img class="img-fluid" style="height:175px;width:175px;" src="'+item.picture+'" alt=""> \
             </div> \
           </div> ' ;
     document.getElementById('myFriends').innerHTML = document.getElementById('myFriends').innerHTML+ toadd;
@@ -76,11 +80,20 @@
         };
   
   function getUserFriends(userId){
+  var i;
 	FB.api(
     "/me/friends",
     function (response) {
       if (response && !response.error) {
 		console.log(response.data);
+		for (i = 2; i <= 4; i++) {
+			var item={
+				id: i,
+				picture: "../static/img/users/"+i+".jpg",
+				name: "user "+i
+			};
+			addUserImage(item);
+		}
 			response.data.forEach(addUserImage);
 			}
 		}
@@ -147,6 +160,20 @@
 	  getUserFriends(response.id);
     });
   }
+  
+  function startTimer() {
+		var counter = 60;
+	var myInterval = setInterval(function () {
+	  counter--;
+	  if(counter<0){
+			document.getElementById('timeOut').innerHTML = "Opssss...To late ! ";
+	}
+	else{
+		document.getElementById('counter').innerHTML = "Points : "+counter;
+	}  
+	}, 1000);
+
+  };
 </script>
 
     <!-- Navigation -->
@@ -160,21 +187,21 @@
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
 			
-		<!--	<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-			</fb:login-button>-->
+			<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+			</fb:login-button>
 		  <button onclick="logout()">logout</button>
-		  		  <button onclick="getPerms()">login</button>
+		  		 <!-- <button onclick="getPerms()">login</button>-->
 
             <!--<a class="nav-link" href="#portfolio">Portfolio</a>-->
           </li>
 		  <li class="nav-item">
 			
            <a class="nav-link" href="#portfolio">Play !</a>
-          </li>
+           <!--</li>
           <li class="nav-item">
             <a class="nav-link" href="#about">About</a>
           </li>
-		  <!--
+		 
           <li class="nav-item">
             <a class="nav-link" href="#contact">Contact</a>
           </li>
@@ -188,9 +215,10 @@
       <div class="container">
         <img class="img-fluid" src="img/profile.png" alt="">
         <div class="intro-text">
-          <span class="name">Start Bootstrap</span>
+          <span class="name">Welcome To Face-It !</span>
           <hr class="star-light">
-          <span class="skills">Web Developer - Graphic Artist - User Experience Designer</span>
+          <span class="skills">Challenge your friends!</span></br>
+		  <span class="skills">See who recognize your mutual friends faster</span>
         </div>
       </div>
     </header>
@@ -199,10 +227,10 @@
     <section id="portfolio">
       <div class="container">
         <h2 class="text-center" id="greeting">Welcome</h2>
-		<div id="myphoto">My Photo</div>
-        <hr class="star-primary">
+		<div id="myphoto" style="float: right; margin-top: -72px;">My Photo</div>
+        <hr class="star-primary" style="margin-top: 60px;">
         <div class="row">
-          <div class="col-sm-4 portfolio-item">
+          <div class="col-sm-4 portfolio-item" >
             <div class="portfolio-link" href="#portfolioModal1" data-toggle="modal">
               <div class="caption">
                 <div class="caption-content">
@@ -213,8 +241,12 @@
 
             </div>
           </div>
-
-		<div id="myFriends"></div>
+		<h3>Peek A Friend To Challenge</h3></br></br>
+		<div id="myFriends">
+			
+		
+		
+		</div>
 	<!--
           <div class="col-sm-4 portfolio-item">
             <div class="portfolio-link" href="#portfolioModal6" data-toggle="modal">
@@ -226,12 +258,12 @@
               <img class="img-fluid" src="../static/img/portfolio/submarine.png" alt="">
             </div>
           </div
-		  -->
+-->
         </div>
       </div>
     </section>
 
-    <!-- About Section -->
+    <!-- About Section 
     <section class="success" id="about">
       <div class="container">
         <h2 class="text-center">About</h2>
@@ -251,17 +283,15 @@
           </div>
         </div>
       </div>
-    </section>
+    </section>-->
 
-    <!-- Contact Section -->
+    <!-- Contact Section 
     <section id="contact">
       <div class="container">
         <h2 class="text-center">Contact Me</h2>
         <hr class="star-primary">
         <div class="row">
           <div class="col-lg-8 mx-auto">
-            <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19. -->
-            <!-- The form should work on most web servers, but if the form is not working you may need to configure your web server differently. -->
             <form name="sentMessage" id="contactForm" novalidate>
               <div class="control-group">
                 <div class="form-group floating-label-form-group controls">
@@ -302,7 +332,7 @@
       </div>
     </section>
 
-    <!-- Footer -->
+    <!-- Footer 
     <footer class="text-center">
       <div class="footer-above">
         <div class="container">
@@ -359,7 +389,7 @@
           </div>
         </div>
       </div>
-    </footer>
+    </footer>-->
 
     <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
     <div class="scroll-top d-lg-none">
@@ -369,7 +399,7 @@
     </div>
 
     <!-- Portfolio Modals -->
-    <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="portfolio-modal modal fade" id="portfolioModal2" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="close-modal" data-dismiss="modal">
@@ -380,29 +410,28 @@
           <div class="container">
             <div class="row">
               <div class="col-lg-8 mx-auto">
+			  <div style="float:left">
+					<div id='hour-glass'>
+					  <div id='glass'></div>
+					  <div id='sand-stream'></div>
+					  <div id='top-sand'></div>
+					  <div id='bottom-sand'></div>
+						</div>
+				</div>
+			<div id="counter" style="position: absolute;font-size: 20px;margin-left:5px"></div>	
+
                 <div class="modal-body">
-                  <h2>Project Title</h2>
+				<div id="gameHeader"><h3>Challenge Michael </h3></div>
+                  
                   <hr class="star-primary">
-                  <img class="img-fluid img-centered" src="img/portfolio/cabin.png" alt="">
-                  <p>Use this area of the page to describe your project. The icon above is part of a free icon set by
-                    <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
-                  <ul class="list-inline item-details">
-                    <li>Client:
-                      <strong>
-                        <a href="http://startbootstrap.com">Start Bootstrap</a>
-                      </strong>
-                    </li>
-                    <li>Date:
-                      <strong>
-                        <a href="http://startbootstrap.com">April 2014</a>
-                      </strong>
-                    </li>
-                    <li>Service:
-                      <strong>
-                        <a href="http://startbootstrap.com">Web Development</a>
-                      </strong>
-                    </li>
-                  </ul>
+					<form style="margin: 30px;">
+					  <input type="text" id="fooInput" />
+					</form>
+					<div id="result">
+					</div>
+					<div id="timeOut" style="font-size: 40px;color: red;font-style: italic;">
+					</div>
+					
                   <button class="btn btn-success" type="button" data-dismiss="modal">
                     <i class="fa fa-times"></i>
                     Close</button>
@@ -413,7 +442,7 @@
         </div>
       </div>
     </div>
-    <div class="portfolio-modal modal fade" id="portfolioModal2" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="portfolio-modal modal fade" id="portfolioModal3" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="close-modal" data-dismiss="modal">
@@ -425,28 +454,10 @@
             <div class="row">
               <div class="col-lg-8 mx-auto">
                 <div class="modal-body">
-                  <h2>Project Title</h2>
+				<div id="gameHeader"><h3>Challenge Or </h3></div>
+                  
                   <hr class="star-primary">
-                  <img class="img-fluid img-centered" src="img/portfolio/cake.png" alt="">
-                  <p>Use this area of the page to describe your project. The icon above is part of a free icon set by
-                    <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
-                  <ul class="list-inline item-details">
-                    <li>Client:
-                      <strong>
-                        <a href="http://startbootstrap.com">Start Bootstrap</a>
-                      </strong>
-                    </li>
-                    <li>Date:
-                      <strong>
-                        <a href="http://startbootstrap.com">April 2014</a>
-                      </strong>
-                    </li>
-                    <li>Service:
-                      <strong>
-                        <a href="http://startbootstrap.com">Web Development</a>
-                      </strong>
-                    </li>
-                  </ul>
+					
                   <button class="btn btn-success" type="button" data-dismiss="modal">
                     <i class="fa fa-times"></i>
                     Close</button>
@@ -457,7 +468,7 @@
         </div>
       </div>
     </div>
-    <div class="portfolio-modal modal fade" id="portfolioModal3" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="portfolio-modal modal fade" id="portfolioModal4" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="close-modal" data-dismiss="modal">
@@ -469,28 +480,10 @@
             <div class="row">
               <div class="col-lg-8 mx-auto">
                 <div class="modal-body">
-                  <h2>Project Title</h2>
+				<div id="gameHeader"><h3>Challenge Ori </h3></div>
+                  
                   <hr class="star-primary">
-                  <img class="img-fluid img-centered" src="img/portfolio/circus.png" alt="">
-                  <p>Use this area of the page to describe your project. The icon above is part of a free icon set by
-                    <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
-                  <ul class="list-inline item-details">
-                    <li>Client:
-                      <strong>
-                        <a href="http://startbootstrap.com">Start Bootstrap</a>
-                      </strong>
-                    </li>
-                    <li>Date:
-                      <strong>
-                        <a href="http://startbootstrap.com">April 2014</a>
-                      </strong>
-                    </li>
-                    <li>Service:
-                      <strong>
-                        <a href="http://startbootstrap.com">Web Development</a>
-                      </strong>
-                    </li>
-                  </ul>
+					
                   <button class="btn btn-success" type="button" data-dismiss="modal">
                     <i class="fa fa-times"></i>
                     Close</button>
@@ -501,7 +494,7 @@
         </div>
       </div>
     </div>
-    <div class="portfolio-modal modal fade" id="portfolioModal4" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="close-modal" data-dismiss="modal">
@@ -513,98 +506,11 @@
             <div class="row">
               <div class="col-lg-8 mx-auto">
                 <div class="modal-body">
-                  <h2>Project Title</h2>
-                  <hr class="star-primary">
-                  <img class="img-fluid img-centered" src="img/portfolio/game.png" alt="">
-                  <p>Use this area of the page to describe your project. The icon above is part of a free icon set by
-                    <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
-                  <ul class="list-inline item-details">
-                    <li>Client:
-                      <strong>
-                        <a href="http://startbootstrap.com">Start Bootstrap</a>
-                      </strong>
-                    </li>
-                    <li>Date:
-                      <strong>
-                        <a href="http://startbootstrap.com">April 2014</a>
-                      </strong>
-                    </li>
-                    <li>Service:
-                      <strong>
-                        <a href="http://startbootstrap.com">Web Development</a>
-                      </strong>
-                    </li>
-                  </ul>
-                  <button class="btn btn-success" type="button" data-dismiss="modal">
-                    <i class="fa fa-times"></i>
-                    Close</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="portfolio-modal modal fade" id="portfolioModal5" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="close-modal" data-dismiss="modal">
-            <div class="lr">
-              <div class="rl"></div>
-            </div>
-          </div>
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-8 mx-auto">
-                <div class="modal-body">
-                  <h2>Project Title</h2>
-                  <hr class="star-primary">
-                  <img class="img-fluid img-centered" src="img/portfolio/safe.png" alt="">
-                  <p>Use this area of the page to describe your project. The icon above is part of a free icon set by
-                    <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
-                  <ul class="list-inline item-details">
-                    <li>Client:
-                      <strong>
-                        <a href="http://startbootstrap.com">Start Bootstrap</a>
-                      </strong>
-                    </li>
-                    <li>Date:
-                      <strong>
-                        <a href="http://startbootstrap.com">April 2014</a>
-                      </strong>
-                    </li>
-                    <li>Service:
-                      <strong>
-                        <a href="http://startbootstrap.com">Web Development</a>
-                      </strong>
-                    </li>
-                  </ul>
-                  <button class="btn btn-success" type="button" data-dismiss="modal">
-                    <i class="fa fa-times"></i>
-                    Close</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="portfolio-modal modal fade" id="portfolioModal6" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="close-modal" data-dismiss="modal">
-            <div class="lr">
-              <div class="rl"></div>
-            </div>
-          </div>
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-8 mx-auto">
-                <div class="modal-body">
-                  <h2>Project Title</h2>
+				<div id="gameHeader"><h3>Challenge Guy </h3></div>
+                  
                   <hr class="star-primary">
                   <img class="img-fluid img-centered" src="img/portfolio/submarine.png" alt="">
-                  <p>Use this area of the page to describe your project. The icon above is part of a free icon set by
+                  <!--<p>Use this area of the page to describe your project. The icon above is part of a free icon set by
                     <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
                   <ul class="list-inline item-details">
                     <li>Client:
@@ -622,7 +528,7 @@
                         <a href="http://startbootstrap.com">Web Development</a>
                       </strong>
                     </li>
-                  </ul>
+                  </ul>-->
                   <button class="btn btn-success" type="button" data-dismiss="modal">
                     <i class="fa fa-times"></i>
                     Close</button>
@@ -633,7 +539,27 @@
         </div>
       </div>
     </div>
-
+		
+		<script type="text/javascript">
+		  var yourSource = [
+		  {
+			label: "A",
+			id: "id1"
+		  }, 
+		  {
+			label: "B",
+			id: "id2"
+		  }];
+		debugger;
+		  $("#fooInput").autocomplete({
+			source: yourSource,
+			select: function(event, ui) {
+			  var e = ui.item;
+			  var result = "<p>label : " + e.label + " - id : " + e.id + "</p>";
+			  $("#result").append(result);
+			}
+		  });
+		</script>
     <!-- Bootstrap core JavaScript -->
     <script src="../static/vendor/jquery/jquery.min.js"></script>
     <script src="../static/vendor/popper/popper.min.js"></script>
