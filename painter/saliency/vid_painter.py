@@ -79,3 +79,6 @@ class Painter(object):
                 yield cur_image_segment
 
             cur_v = next_v
+
+    def min_num_frames(self):
+        return np.count_nonzero(self.intensity==0)
