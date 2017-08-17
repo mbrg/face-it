@@ -1,6 +1,6 @@
 # coding=utf-8
 #
-# !/usr/bin/python
+# !/usr/bin/env python3
 #
 # Copyright 2013 Johannes Bauer, Universitaet Hamburg
 #
@@ -38,7 +38,7 @@ from collections import namedtuple
 logger = logging.getLogger(__name__)
 
 
-def features(image, channel, levels=9, start_size=(640, 480), ):
+def features(image, channel, levels=9, start_size=(512, 512), ):
     """
         Extracts features by down-scaling the image levels times,
         transforms the image by applying the function channel to
@@ -130,7 +130,7 @@ def gaborConspicuity(image, steps):
     """
         Creates the conspicuity map for the channel `orientations'.
     """
-    gaborConspicuity = numpy.zeros((60, 80), numpy.uint8)
+    gaborConspicuity = numpy.zeros((64,64), numpy.uint8)
     for step in range(steps):
         theta = step * (math.pi / steps)
         gaborFilter = makeGaborFilter(dims=(10, 10), lambd=2.5, theta=theta, psi=math.pi / 2, sigma=2.5, gamma=.5)
@@ -170,7 +170,7 @@ def byConspicuity(image):
     return sumNormalizedFeatures(fs)
 
 
-def sumNormalizedFeatures(features, levels=9, startSize=(640, 480)):
+def sumNormalizedFeatures(features, levels=9, startSize=(512, 512)):
     """
         Normalizes the feature maps in argument features and combines them into one.
         Arguments:
@@ -185,7 +185,7 @@ def sumNormalizedFeatures(features, levels=9, startSize=(640, 480)):
     commonWidth = startSize[0] / 2 ** (levels / 2 - 1)
     commonHeight = startSize[1] / 2 ** (levels / 2 - 1)
     commonSize = commonWidth, commonHeight
-    logger.info("Size of conspicuity map: %s", commonSize)
+    #logger.info("Size of conspicuity map: %s", commonSize)
     consp = N(cv2.resize(features[0][1], commonSize))
     for f in features[1:]:
         resized = N(cv2.resize(f[1], commonSize))
@@ -262,9 +262,7 @@ def markMaxima(saliency):
     return marked
 
 
-def api(im, is_intensityOutput=False, is_gaborOutput=False,
-        is_rgOutput=False, is_byOutput=False, is_cOutput=False, is_saliencyOutput=False,
-        is_markMaxima=False):
+def api(im, is_markMaxima=False):
     """
     Simple Itti-Koch-style conspicuity.
     :param inputFile: File to compute compute saliency list for.  Need either fileList or inputFile.
@@ -298,7 +296,7 @@ def api(im, is_intensityOutput=False, is_gaborOutput=False,
     c = rg + by
     saliency = 1. / 3 * (N(intensty) + N(c) + N(gabor))
 
-    if markMaxima:
+    if is_markMaxima:
         saliency = markMaxima(saliency)
 
     maps = SaliencyMaps(intensty, gabor, rg, by, .25 * c, saliency)
