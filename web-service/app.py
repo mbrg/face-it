@@ -5,8 +5,8 @@ from os.path import join, exists
 
 
 # globals
-UPLOAD_FOLDER = '/home/dsteam/repos/face-it/web-service/tmp/'
-GIFS_FOLDER = '/home/dsteam/repos/face-it/web-service/gifs/'
+UPLOAD_FOLDER = 'tmp/'
+GIFS_FOLDER = 'gifs/'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 FILE_CNTR = 0
 
