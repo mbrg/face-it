@@ -1,9 +1,7 @@
 from flask import Flask, render_template, json, request, url_for, redirect, send_from_directory
 #from flask.ext.mysql import MySQL
 from werkzeug import generate_password_hash, check_password_hash
-from os.path import join
-from painter import main
-from subprocess import Popen, PIPE
+from os.path import join, exists
 
 
 # globals
@@ -58,23 +56,22 @@ def upload_file():
             cnt_filename = '%d.jpg' % FILE_CNTR
             file.save(join(app.config['UPLOAD_FOLDER'], cnt_filename))
 
-            red = redirect(url_for('uploaded_file', filename=join(GIFS_FOLDER, '%d.gif' % FILE_CNTR)))  # redirects to /uploads/filename
+            red = redirect(url_for('uploaded_file', filename='%d.gif' % FILE_CNTR))  # redirects to /uploads/filename
 
             FILE_CNTR += 1
             return red
-    return '''
-        <!doctype html>
-        <title>Upload new File</title>
-        <h1>Upload new File</h1>
-        <form method=post enctype=multipart/form-data>
-          <p><input type=file name=file>
-             <input type=submit value=Upload>
-        </form>
-        '''
+    return render_template('upload.html')
+
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+    filepath = join(GIFS_FOLDER, filename)
+
+    if exists(filepath) :
+        return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+    else:
+        return render_template('not_ready.html')
 
 
 if __name__ == "__main__":
