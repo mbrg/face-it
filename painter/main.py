@@ -44,11 +44,11 @@ def main():
 
     # read image
     cmnd = "source activate image_pp; %s --image='%s' --grey='%s' --xml='%s'; source deactivate" \
-           % (join(args.root,args.image_prepro), join(args.root,args.image_path),
-              join(args.root, args.tmp_path), join(args.root, args.xml_path))
+           % (join(args.project_root,args.image_prepro), join(args.project_root,args.image_path),
+              join(args.project_root, args.tmp_path), join(args.project_root, args.xml_path))
     process = Popen(cmnd, shell=True, stdout=PIPE)
     process.wait()
-    image_segment = cv2.imread(join(args.root, args.tmp_path))
+    image_segment = cv2.imread(join(args.project_root, args.tmp_path))
 
     # create an MRF and Saliancy agent
     painter = Painter(image_segment, dist_scale_thresh=args.dist_treshold, image_shape=IMAGE_SHAPE, observed_value=OBSERVED_VALUE)
@@ -81,7 +81,7 @@ def main():
     ani = animation.FuncAnimation(fig, updatefig, frames=args.frame_limit, interval=args.msecs_per_frame, blit=True)
     rc('animation', html='html5')
     writer = animation.FFMpegWriter(fps=args.fps)
-    ani.save(args.join(args.root, args.output_path), writer=writer)
+    ani.save(args.join(args.project_root, args.output_path), writer=writer)
 
 if __name__ == '__main__':
     main()
