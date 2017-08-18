@@ -26,7 +26,7 @@ def argument_parser():
     parser.add_argument('--fps', dest='frames_per_sec', default=None, type=int)
 
     parser.add_argument('--root', dest='project_root', default='/home/dsteam/repos/face-it/', type=str)
-    parser.add_argument('--out', dest='output_path', default='painter/or_vid.mp4', type=str)
+    parser.add_argument('--out', dest='output_path', default='painter/videos/or_vid.mp4', type=str)
     parser.add_argument('--image', dest='image_path', default='painter/examples/or.jpg', type=str)
     parser.add_argument('--prepro', dest='image_prepro', default='painter/image_preprocessor.py', type=str)
     parser.add_argument('--tmp', dest='tmp_path', default='painter/examples/tmp.jpg', type=str)
@@ -80,8 +80,8 @@ def main():
     # animate and record
     ani = animation.FuncAnimation(fig, updatefig, frames=args.frame_limit, interval=args.msecs_per_frame, blit=True)
     rc('animation', html='html5')
-    writer = animation.FFMpegWriter()
-    ani.save(args.join(args.root, args.output_path), writer=writer, fps=args.fps)
+    writer = animation.FFMpegWriter(fps=args.fps)
+    ani.save(args.join(args.root, args.output_path), writer=writer)
 
 if __name__ == '__main__':
     main()
