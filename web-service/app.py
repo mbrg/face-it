@@ -6,8 +6,7 @@ from os.path import join, exists
 
 # globals
 UPLOAD_FOLDER = 'tmp/'
-GIFS_FOLDER = 'gifs/'
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 FILE_CNTR = 0
 
 #mysql = MySQL()
@@ -66,10 +65,10 @@ def upload_file():
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
 
-    filepath = join(GIFS_FOLDER, filename)
+    filepath = join(UPLOAD_FOLDER, filename)
 
     if exists(filepath) :
-        return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+        return send_from_directory(app.config['UPLOAD_FOLDER'], filename) # , as_attachment=True
     else:
         return render_template('not_ready.html')
 

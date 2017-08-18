@@ -136,3 +136,7 @@ ENV/
 
 # PyCharm
 .idea/
+web-service/gifs/0.gif
+web-service/tmp/0.gif
+web-service/tmp/0.jpg
+web-service/tmp/1.jpg
