@@ -1,7 +1,8 @@
-import matplotlib
-matplotlib.use('Agg')
+#import matplotlib
+#matplotlib.use('Agg')
 from matplotlib import animation, rc
 import matplotlib.pyplot as plt
+plt.ioff()
 
 from os.path import join
 import sys
