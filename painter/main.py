@@ -78,7 +78,8 @@ def main():
     # animate and record
     ani = animation.FuncAnimation(fig, updatefig, frames=8000, interval=args.msecs_per_frame, blit=True)
     rc('animation', html='html5')
-    ani.save(args.join(args.root, args.output_path), writer='ffmpeg', fps=args.fps)
+    writer = animation.FFMpegWriter()
+    ani.save(args.join(args.root, args.output_path), writer=writer, fps=args.fps)
 
 if __name__ == '__main__':
     main()
