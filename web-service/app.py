@@ -2,8 +2,6 @@ from flask import Flask, render_template, json, request, url_for, redirect, send
 #from flask.ext.mysql import MySQL
 from werkzeug import generate_password_hash, check_password_hash
 from os.path import join
-from painter import main
-from subprocess import Popen, PIPE
 
 
 # globals
@@ -62,15 +60,8 @@ def upload_file():
 
             FILE_CNTR += 1
             return red
-    return '''
-        <!doctype html>
-        <title>Upload new File</title>
-        <h1>Upload new File</h1>
-        <form method=post enctype=multipart/form-data>
-          <p><input type=file name=file>
-             <input type=submit value=Upload>
-        </form>
-        '''
+    return render_template('upload.html')
+
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
