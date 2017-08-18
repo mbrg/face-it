@@ -63,6 +63,7 @@ def main():
     blank_img = np.multiply(np.ones(IMAGE_SHAPE), 255).astype(np.int)
     blank_img[0] = 0
     im = plt.figimage(blank_img, 'gray', animated=True)
+    plt.close(fig)
     cur_frame, frame_cntr = None, 0
 
     # define frame producing function
