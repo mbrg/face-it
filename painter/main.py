@@ -27,7 +27,7 @@ def argument_parser():
 
     parser.add_argument('--out', dest='output_path', default='painter/videos/or_vid.mp4', type=str)
     parser.add_argument('--image', dest='image_path', default='painter/examples/or.jpg', type=str)
-    parser.add_argument('--add_root', action='store_true', dest='add_root', default=False, type=str)
+    parser.add_argument('--add_root', action='store_true', dest='add_root', default=False)
 
     parser.add_argument('--root', dest='project_root', default='/home/dsteam/repos/face-it/', type=str)
     parser.add_argument('--prepro', dest='image_prepro', default='painter/image_preprocessor.py', type=str)
