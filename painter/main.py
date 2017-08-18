@@ -20,11 +20,12 @@ IMAGE_SHAPE = (512,512)
 def argument_parser():
     parser = argparse.ArgumentParser(description='Painter')
     parser.add_argument('--thresh', dest='dist_treshold', default=40, type=int)
+    parser.add_argument('--frame_limit', dest='frame_limit', default=8000, type=int)
     parser.add_argument('--frame_msec', dest='msecs_per_frame', default=6, type=int)
     parser.add_argument('--fps', dest='frames_per_sec', default=None, type=int)
 
     parser.add_argument('--root', dest='project_root', default='/home/dsteam/repos/face-it/', type=str)
-    parser.add_argument('--out', dest='output_path', default='painter/or_vid.jpg', type=str)
+    parser.add_argument('--out', dest='output_path', default='painter/or_vid.mp4', type=str)
     parser.add_argument('--image', dest='image_path', default='painter/examples/or.jpg', type=str)
     parser.add_argument('--prepro', dest='image_prepro', default='painter/image_preprocessor.py', type=str)
     parser.add_argument('--tmp', dest='tmp_path', default='painter/examples/tmp.jpg', type=str)
@@ -76,7 +77,7 @@ def main():
         return im,
 
     # animate and record
-    ani = animation.FuncAnimation(fig, updatefig, frames=8000, interval=args.msecs_per_frame, blit=True)
+    ani = animation.FuncAnimation(fig, updatefig, frames=args.frame_limit, interval=args.msecs_per_frame, blit=True)
     rc('animation', html='html5')
     writer = animation.FFMpegWriter()
     ani.save(args.join(args.root, args.output_path), writer=writer, fps=args.fps)
