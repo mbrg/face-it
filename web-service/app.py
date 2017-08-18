@@ -8,6 +8,7 @@ from subprocess import Popen, PIPE
 
 # globals
 UPLOAD_FOLDER = '/home/dsteam/repos/face-it/web-service/tmp/'
+GIFS_FOLDER = '/home/dsteam/repos/face-it/web-service/gifs/'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 FILE_CNTR = 0
 
@@ -57,12 +58,7 @@ def upload_file():
             cnt_filename = '%d.jpg' % FILE_CNTR
             file.save(join(app.config['UPLOAD_FOLDER'], cnt_filename))
 
-            # generate video
-            cmnd = "source activate image_pp; python '/home/dsteam/repos/face-it/painter/main.py' --image='%s' --out='%s'; source deactivate" \
-                   % (join(UPLOAD_FOLDER, cnt_filename), join(UPLOAD_FOLDER, '%d.mp4' % FILE_CNTR))
-            process = Popen(cmnd, shell=True, stdout=PIPE)
-
-            red = redirect(url_for('uploaded_file', filename=join(UPLOAD_FOLDER, '%d.mp4' % FILE_CNTR)))  # redirects to /uploads/filename
+            red = redirect(url_for('uploaded_file', filename=join(GIFS_FOLDER, '%d.gif' % FILE_CNTR)))  # redirects to /uploads/filename
 
             FILE_CNTR += 1
             return red
