@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Face It !</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+
+    <!-- Custom fonts for this template -->
+    <link href="../static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+
+    <!-- Custom styles for this template -->
+    <link href="../static/css/freelancer.min.css" rel="stylesheet">
+	<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>-->
+	<link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+	  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+	<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.js"></script>-->
+
+	<link href="../static/css/counterSand.css" rel="stylesheet">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+ <script>
+  $( function() {
+    var availableTags = [
+      "ActionScript",
+      "AppleScript",
+      "Asp",
+      "BASIC",
+      "C",
+      "C++",
+      "Clojure",
+      "COBOL",
+      "ColdFusion",
+      "Erlang",
+      "Fortran",
+      "Groovy",
+      "Haskell",
+      "Java",
+      "JavaScript",
+      "Lisp",
+      "Perl",
+      "PHP",
+      "Python",
+      "Ruby",
+      "Scala",
+      "Scheme"
+    ];
+    $( "#tags" ).autocomplete({
+      source: availableTags
+    });
+  } );
+  </script>
+
+  </head>
+
+  <body class="index" id="page-top">
+	<script>
+  // This is called with the results from from FB.getLoginStatus().
+  function statusChangeCallback(response) {
+    console.log('statusChangeCallback');
+    console.log(response);
+    // The response object is returned with a status field that lets the
+    // app know the current login status of the person.
+    // Full docs on the response object can be found in the documentation
+    // for FB.getLoginStatus().
+    if (response.status === 'connected') {
+      // Logged into your app and Facebook.
+      testAPI();
+    } else {
+      // The person is not logged into your app or we are unable to tell.
+      document.getElementById('status').innerHTML = 'Please log ' +
+        'into this app.';
+    }
+  }
+  // This function is called when someone finishes with the Login
+  // Button.  See the onlogin handler attached to it in the sample
+  // code below.
+  function getUser(userId) {
+    FB.api(
+	"/"+userId+"/picture?width=150",
+	function(response) {
+		if(response && !response.error){
+			console.log(response);
+			document.getElementById('myphoto').innerHTML = '<img style="border-radius: 70px;"src='+response.data.url+'>';
+		}		
+    });
+  };
+    function addUserImage(item) {
+	var toadd= '<div class="col-sm-4 portfolio-item style="float:left;"> \
+            <div class="portfolio-link" href="#portfolioModal'+item.id+'" data-toggle="modal" onclick="startTimer()"> \
+              <div class="caption"> \
+                <div class="caption-content"> \
+                  <i class="fa fa-search-plus fa-3x"></i> \
+                </div> \
+              </div> \
+              <img class="img-fluid" style="height:175px;width:175px;" src="'+item.picture+'" alt=""> \
+            </div> \
+          </div> ' ;
+    document.getElementById('myFriends').innerHTML = document.getElementById('myFriends').innerHTML+ toadd;
+};
+	function logout() {
+            FB.logout(function(response) {
+              // user is now logged out
+            });
+        };
+  
+  function getUserFriends(userId){
+  var i;
+	FB.api(
+    "/me/friends",
+    function (response) {
+      if (response && !response.error) {
+		console.log(response.data);
+		for (i = 2; i <= 4; i++) {
+			var item={
+				id: i,
+				picture: "../static/img/users/"+i+".jpg",
+				name: "user "+i
+			};
+			addUserImage(item);
+		}
+			response.data.forEach(addUserImage);
+			}
+		}
+		);
+	 };
+	 function getPerms() {
+    FB.login(function(response) {
+        if (response.authResponse) {
+		console.log(response.authResponse);
+            testAPI();
+        }
+    }, {scope:"user_friends"});
+	testAPI();
+};
+  
+  
+  function checkLoginState() {
+    FB.getLoginStatus(function(response) {
+	console.log(response);
+	console.log("active get perms");
+		getPerms();
+      statusChangeCallback(response);
+    });
+  }
+  window.fbAsyncInit = function() {
+  FB.init({
+    appId      : '112092699492326',
+    cookie     : true,  // enable cookies to allow the server to access 
+                        // the session
+    xfbml      : true,  // parse social plugins on this page
+    version    : 'v2.8' // use graph api version 2.8
+  });
+  // Now that we've initialized the JavaScript SDK, we call 
+  // FB.getLoginStatus().  This function gets the state of the
+  // person visiting this page and can return one of three states to
+  // the callback you provide.  They can be:
+  //
+  // 1. Logged into your app ('connected')
+  // 2. Logged into Facebook, but not your app ('not_authorized')
+  // 3. Not logged into Facebook and can't tell if they are logged into
+  //    your app or not.
+  //
+  // These three cases are handled in the callback function.
+  FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+  });
+  };
+  // Load the SDK asynchronously
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+  // Here we run a very simple test of the Graph API after login is
+  // successful.  See statusChangeCallback() for when this call is made.
+  function testAPI() {
+	console.log("testAPI");
+    FB.api('/me', function(response) {
+	console.log(response);
+      document.getElementById('greeting').innerHTML = "Hello "+response.name;
+	  getUser(response.id);
+	  getUserFriends(response.id);
+    });
+  }
+  let counter=60;
+  var myInterval;
+  function startTimer() {
+  autoActivate();
+	 counter = 60;
+     myInterval = setInterval(function () {
+	  counter--;
+	  if(counter<0){
+			document.getElementById('timeOut').innerHTML = "Opssss...To late ! ";
+			 clearInterval(myInterval);
+	}		
+	else{
+		document.getElementById('counter').innerHTML = "Points : "+counter;
+	}  
+	}, 1000);
+
+  };
+  
+  function stopCounter(){
+	clearInterval(myInterval);
+  };
+  
+</script>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+      <a class="navbar-brand" href="#page-top">Face It !</a>
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        Menu
+        <i class="fa fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+			
+			<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+			</fb:login-button>
+		  <button onclick="logout()">logout</button>
+		  		 <!-- <button onclick="getPerms()">login</button>-->
+
+            <!--<a class="nav-link" href="#portfolio">Portfolio</a>-->
+          </li>
+		  <li class="nav-item">
+			
+           <a class="nav-link" href="#portfolio">Play !</a>
+           <!--</li>
+          <li class="nav-item">
+            <a class="nav-link" href="#about">About</a>
+          </li>
+		 
+          <li class="nav-item">
+            <a class="nav-link" href="#contact">Contact</a>
+          </li>
+		  -->
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="masthead">
+      <div class="container">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="close-modal" data-dismiss="modal">
+            <div class="lr">
+              <div class="rl"></div>
+            </div>
+          </div>
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-8 mx-auto">
+			  <div style="float:left">
+					<div id='hour-glass'>
+					  <div id='glass'></div>
+					  <div id='sand-stream'></div>
+					  <div id='top-sand'></div>
+					  <div id='bottom-sand'></div>
+						</div>
+				</div>
+			<div id="counter" style="position: absolute;font-size: 20px;margin-left:5px"></div>	
+
+                <div class="modal-body">
+				<div id="gameHeader"><h3>Challenge Michael </h3></div>
+                  
+                  <hr class="star-primary">
+				  
+		<div class="ui-widget" style="z-index: 10000;">
+  <label for="tags">Tags: </label>
+  <input id="tags">
+</div>
+				  
+				  
+					<form style="margin: 30px;">
+					  <input type="text" id="fooInput" />
+					</form>
+					<div id="result">
+					</div>
+					<div id="timeOut" style="font-size: 40px;color: red;font-style: italic;">
+					</div>
+					
+                  <button class="btn btn-success" type="button" data-dismiss="modal" onclick="stopCounter()">
+                    <i class="fa fa-times"></i>
+                    Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+      </div>
+    </header>
+
+  </section>
+
+    <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
+    <div class="scroll-top d-lg-none">
+      <a class="btn btn-primary page-scroll" href="#page-top">
+        <i class="fa fa-chevron-up"></i>
+      </a>
+    </div>
+
+    <!-- Portfolio Modals -->
+        <div class="portfolio-modal modal fade" id="portfolioModal2" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="close-modal" data-dismiss="modal">
+            <div class="lr">
+              <div class="rl"></div>
+            </div>
+          </div>
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-8 mx-auto">
+			  <div style="float:left">
+					<div id='hour-glass'>
+					  <div id='glass'></div>
+					  <div id='sand-stream'></div>
+					  <div id='top-sand'></div>
+					  <div id='bottom-sand'></div>
+						</div>
+				</div>
+			<div id="counter" style="position: absolute;font-size: 20px;margin-left:5px"></div>	
+
+                <div class="modal-body">
+				<div id="gameHeader"><h3>Challenge Michael </h3></div>
+                  
+                  <hr class="star-primary">
+				  
+		<div class="ui-widget" style="z-index: 10000;">
+  <label for="tags">Tags: </label>
+  <input id="tags">
+</div>
+				  
+				  
+					<form style="margin: 30px;">
+					  <input type="text" id="fooInput" />
+					</form>
+					<div id="result">
+					</div>
+					<div id="timeOut" style="font-size: 40px;color: red;font-style: italic;">
+					</div>
+					
+                  <button class="btn btn-success" type="button" data-dismiss="modal" onclick="stopCounter()">
+                    <i class="fa fa-times"></i>
+                    Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+	<div class="portfolio-modal modal fade" id="portfolioModal3" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="close-modal" data-dismiss="modal">
+            <div class="lr">
+              <div class="rl"></div>
+            </div>
+          </div>
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-8 mx-auto">
+                <div class="modal-body">
+				<div id="gameHeader"><h3>Challenge Or </h3></div>
+                  
+                  <hr class="star-primary">
+					
+                  <button class="btn btn-success" type="button" data-dismiss="modal">
+                    <i class="fa fa-times"></i>
+                    Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+	<div class="portfolio-modal modal fade" id="portfolioModal4" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="close-modal" data-dismiss="modal">
+            <div class="lr">
+              <div class="rl"></div>
+            </div>
+          </div>
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-8 mx-auto">
+                <div class="modal-body">
+				<div id="gameHeader"><h3>Challenge Ori </h3></div>
+                  
+                  <hr class="star-primary">
+					
+                  <button class="btn btn-success" type="button" data-dismiss="modal">
+                    <i class="fa fa-times"></i>
+                    Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+	<div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="close-modal" data-dismiss="modal">
+            <div class="lr">
+              <div class="rl"></div>
+            </div>
+          </div>
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-8 mx-auto">
+                <div class="modal-body">
+				<div id="gameHeader"><h3>Challenge Guy </h3></div>
+                  
+                  <hr class="star-primary">
+                  <img class="img-fluid img-centered" src="img/portfolio/submarine.png" alt="">
+                  <!--<p>Use this area of the page to describe your project. The icon above is part of a free icon set by
+                    <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
+                  <ul class="list-inline item-details">
+                    <li>Client:
+                      <strong>
+                        <a href="http://startbootstrap.com">Start Bootstrap</a>
+                      </strong>
+                    </li>
+                    <li>Date:
+                      <strong>
+                        <a href="http://startbootstrap.com">April 2014</a>
+                      </strong>
+                    </li>
+                    <li>Service:
+                      <strong>
+                        <a href="http://startbootstrap.com">Web Development</a>
+                      </strong>
+                    </li>
+                  </ul>-->
+                  <button class="btn btn-success" type="button" data-dismiss="modal">
+                    <i class="fa fa-times"></i>
+                    Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+		
+		<script type="text/javascript">
+		  var yourSource = [
+		  {
+			label: "A",
+			id: "id1"
+		  }, 
+		  {
+			label: "B",
+			id: "id2"
+		  }];
+		  $("#fooInput").autocomplete({
+			source: yourSource,
+			select: function(event, ui) {
+			  var e = ui.item;
+			  var result = "<p>label : " + e.label + " - id : " + e.id + "</p>";
+			  $("#result").append(result);
+			}
+		  });
+		</script>
+    <!-- Bootstrap core JavaScript
+    <script src="../static/vendor/jquery/jquery.min.js"></script> -->
+    <script src="../static/vendor/popper/popper.min.js"></script>
+    <script src="../static/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="../static/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Contact Form JavaScript -->
+    <script src="../static/js/jqBootstrapValidation.js"></script>
+    <script src="../static/js/contact_me.js"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="../static/js/freelancer.min.js"></script>
+
+  </body>
+
+</html>
