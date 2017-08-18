@@ -1,6 +1,7 @@
 
 import matplotlib.pyplot as plt
-from matplotlib import animation, rc
+from matplotlib import animation, rc, use
+use('Agg')
 
 from os.path import join
 import sys
@@ -12,9 +13,8 @@ import logging
 import cv2
 import numpy as np
 
-
 OBSERVED_VALUE = 0
-IMAGE_SHAPE = (512,512)
+IMAGE_SHAPE = (512, 512)
 
 
 def argument_parser():
