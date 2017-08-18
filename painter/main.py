@@ -30,7 +30,7 @@ def argument_parser():
     parser.add_argument('--image', dest='image_path', default='painter/examples/or.jpg', type=str)
     parser.add_argument('--prepro', dest='image_prepro', default='painter/image_preprocessor.py', type=str)
     parser.add_argument('--tmp', dest='tmp_path', default='painter/examples/tmp.jpg', type=str)
-    parser.add_argument('--xml', dest='xml_path', type=str, default='data/haarcascade_frontalface_alt.xml')
+    parser.add_argument('--xml', dest='xml_path', type=str, default='painter/data/haarcascade_frontalface_alt.xml')
 
     return parser.parse_args()
 
@@ -44,8 +44,9 @@ def main():
 
     # read image
     cmnd = "source activate image_pp; %s --image='%s' --grey='%s' --xml='%s'; source deactivate" \
-           % (join(args.project_root,args.image_prepro), join(args.project_root,args.image_path),
+           % (join(args.project_root, args.image_prepro), join(args.project_root,args.image_path),
               join(args.project_root, args.tmp_path), join(args.project_root, args.xml_path))
+
     process = Popen(cmnd, shell=True, stdout=PIPE)
     process.wait()
     image_segment = cv2.imread(join(args.project_root, args.tmp_path))
