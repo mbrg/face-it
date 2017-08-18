@@ -1,6 +1,6 @@
-
-from matplotlib import animation, rc, use
-use('Agg')
+import matplotlib
+matplotlib.use('Agg')
+from matplotlib import animation, rc
 import matplotlib.pyplot as plt
 
 from os.path import join
