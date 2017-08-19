@@ -42,7 +42,7 @@ The results resembles the all-familiar videos of paint-artists, creating amazing
 
 ![Alt text](/web-service/static/vid/guy_vid.gif?raw=true "Result")
 
-## What Can We Learn From This Project?
+## Implications
 
 Once the user successfully recognised the person in the video, we induce that enough information about the image has been unvailed, and the image's subject is now clear. Hence, we can generate a dataset of images, and their minimal-information versions, which is still recognizable by a human.
 
