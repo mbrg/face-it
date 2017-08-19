@@ -136,4 +136,8 @@ ENV/
 
 # PyCharm
 .idea/
-web-service/gifs/0.gif
+
+# Project
+web-service/tmp/*
+web-service/gifs/*
+painter/videos/*

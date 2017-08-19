@@ -102,7 +102,7 @@ class Painter(object):
                 logging.info('Moving to coor=%s' % str(next_v._coor if next_v else ''))
 
             if next_v is None:
-                if 0 <= cntr % 1000 <= 50:
+                if 0 <= cntr % 1000 <= 5:
                     logging.info('Jumping to next salient location, no unobserved neighs, number=%d' % cntr)
 
                 # no unobserved neighs
