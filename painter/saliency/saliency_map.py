@@ -2,28 +2,9 @@
 #
 # !/usr/bin/env python3
 #
-# Copyright 2013 Johannes Bauer, Universitaet Hamburg
-#
-# This file is free software.  Do with it whatever you like.
-# It comes with no warranty, explicit or implicit, whatsoever.
-#
-# This python script implements an early version of Itti and Koch's
-# saliency model.  Specifically, it was written according to the
-# information contained in the following paper:
-#
-#   Laurent Itti, Christof Koch, and Ernst Niebur. A model of
-#   Saliency-Based visual attention for rapid scene analysis. IEEE
-#   Transactions on Pattern Analysis and Machine Intelligence,
-#   20(11):1254–1259, 1998.
-#
-# If you find it useful or if you have any questions, do not
-# hesitate to contact me at
-#   bauer at informatik dot uni dash hamburg dot de.
-#
-# For information on how to use this script, type
-#   > python saliency.py -h
-# on the command line.
-#
+# Adjusted from:
+#   https://gist.github.com/tatome/d491c8b1ec5ed8d4744c
+#   2013 Johannes Bauer, Universitaet Hamburg
 
 import math
 import logging
