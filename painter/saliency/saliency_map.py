@@ -5,6 +5,7 @@
 # Adjusted from:
 #   https://gist.github.com/tatome/d491c8b1ec5ed8d4744c
 #   2013 Johannes Bauer, Universitaet Hamburg
+#   Based on Itti, Laurent, Christof Koch, and Ernst Niebur, "A model of saliency-based visual attention for rapid scene analysis".
 
 import math
 import logging
