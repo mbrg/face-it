@@ -10,13 +10,13 @@ Our project combines a model which generates paiting videos from still images, a
 
 ## The Game
 
-After logging into my Facebook acount, we can choose a friend to challange:
+After logging into our Facebook acount, we can choose a friend to challange:
 
 <!---![Alt text](/demo/pick.png?raw=true "Welcome, pick a friend")-->
 
 <img src="/demo/pick.png" alt="Welcome & Pick a friend" width="600" height="600" />
 
-A random mutural friend is selected, and his profile picture runs through our model to generate a painting video. Our goal is the recogine the person in the photo as fast as possible!
+A random mutural friend is selected, and his profile picture runs through our model to generate a painting video. Our goal is to recogine the person in the photo as fast as possible!
 
 | <img src="/demo/or.png" alt="Wrong choice" width="300" height="400" />  | <img src="/demo/guy.png" alt="Correct!" width="300" height="400" /> |
 |:---:|:---:|
@@ -31,8 +31,8 @@ We start by applying a facial recognision model, which crops and resizes the pic
 Our model has two main components:
 
 - A Markov Random Field (MRF) on a grid-graph, where each pixel is a vertex, connected to it's direct neighboors (left, right, up, down).
-All vertices are initiated at an "unobserved" state.
-- A Saliency prediction model, which attempt to find the areas in the image which contain the most information.
+All vertices are initiated at an *unobserved* state.
+- A Saliency prediction model, which attempt to find the areas in the image that contain the most information.
 
 To generate the painting video, we use the following steps iterativly:
 - We find the vertex (pixel) with the highest saliency, and set it as a starting point.
