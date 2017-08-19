@@ -6,6 +6,15 @@ OpenCV 3.2
 Matplotlib 2
 Numpy 1.6+
 
+image preprocessor venv:
+cycler==0.10.0
+matplotlib==2.0.2
+numpy==1.12.1
+pyparsing==2.2.0
+python-dateutil==2.6.1
+pytz==2017.2
+six==1.10.0
+
 saliency:
 python 2.7
 OpenCV 2.4.11
