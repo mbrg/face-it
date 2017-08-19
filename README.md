@@ -18,9 +18,7 @@ After logging into our Facebook acount, we can choose a friend to challange:
 
 A random mutural friend is selected, and his profile picture runs through our model to generate a painting video. Our goal is to recogine the person in the photo as fast as possible!
 
-| <img src="/demo/or.png" alt="Wrong choice" width="300" height="400" />  | <img src="/demo/guy.png" alt="Correct!" width="300" height="400" /> |
-|:---:|:---:|
-| Wrong choice | Correct! |
+<img src="/demo/or.png" alt="Wrong choice" width="300" height="400" /> <img src="/demo/guy.png" alt="Correct!" width="300" height="400" /> 
 
 Now I can challange my friend to try and recognize our mutural friend faster!
 
