@@ -22,7 +22,7 @@ A random mutural friend is selected, and his profile picture runs through our mo
 |:---:|:---:|
 | Wrong choice | Correct! |
 
-Now I can challange my friend to try and recognize Guy faster!
+Now I can challange my friend to try and recognize our mutural friend faster!
 
 ## The Model
 
