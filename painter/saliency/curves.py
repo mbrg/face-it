@@ -1,5 +1,6 @@
 """
 Implements conversion functions between a 2D plane (a square) and 1D curves.
+See: https://github.com/mibarg/space-filling-curves
 """
 
 class Curve_2D(object):
