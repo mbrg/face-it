@@ -1,5 +1,7 @@
 # Face-It
 
+First runner-up at Facebook Hackathon, Tel Aviv, 2017.
+
 ## Intro
 
 What is the minimal set of elements which makes a person distinct?
